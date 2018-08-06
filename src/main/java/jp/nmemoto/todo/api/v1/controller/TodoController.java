@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/v1/todos")
 public class TodoController {
@@ -32,6 +33,14 @@ public class TodoController {
     public TodoDTO create(@RequestBody TodoDTO todoDTO) {
         return todoService.create(todoDTO);
     }
+
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "{id}")
+    public TodoDTO patch(@PathVariable Long id, @RequestBody TodoDTO todoDTO) {
+        todoDTO.setId(id);
+        return todoService.patch(todoDTO);
+    }
+
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public TodoDTO update(@PathVariable Long id, @RequestBody TodoDTO todoDTO) {
