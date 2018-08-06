@@ -12,6 +12,8 @@ public interface TodoService {
 
     TodoDTO create(TodoDTO todoDTO);
 
+    TodoDTO patch(TodoDTO todoDTO);
+
     TodoDTO update(TodoDTO todoDTO);
 
     void delete(Long id);

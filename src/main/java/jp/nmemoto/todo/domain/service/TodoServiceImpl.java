@@ -49,6 +49,22 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    public TodoDTO patch(TodoDTO todoDTO) {
+        return todoRepository.findById(todoDTO.getId()).map(todo -> {
+            if(todoDTO.getName() != null){
+                todo.setName(todoDTO.getName());
+            }
+            if(todoDTO.getDone() != null){
+                todo.setDone(todoDTO.getDone());
+            }
+            TodoDTO returnDto = modelMapper.map(todoRepository.save(todo), TodoDTO.class);
+            returnDto.setId(todo.getId());
+            return returnDto;
+            // TODO
+        }).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
     public TodoDTO update(TodoDTO todoDTO) {
         Optional<Todo> todoOptional = todoRepository.findById(todoDTO.getId());
         if (todoOptional.isPresent()) {
