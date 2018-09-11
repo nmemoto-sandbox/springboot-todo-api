@@ -1,10 +1,7 @@
 spring:
   profiles: dev
-  dataSource:
-    url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
+  datasource:
+    url:  jdbc:postgresql://todo_db/todo_db
+    username: todo
+    password: todo_password
+    driverClassName: org.postgresql.Driver
