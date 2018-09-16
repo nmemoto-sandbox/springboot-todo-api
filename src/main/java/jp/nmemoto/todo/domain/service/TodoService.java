@@ -1,7 +1,6 @@
 package jp.nmemoto.todo.domain.service;
 
 import jp.nmemoto.todo.api.v1.dto.TodoDTO;
-import jp.nmemoto.todo.domain.model.Todo;
 
 import java.util.List;
 
