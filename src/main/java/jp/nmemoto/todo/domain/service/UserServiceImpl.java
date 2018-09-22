@@ -3,6 +3,7 @@ package jp.nmemoto.todo.domain.service;
 import jp.nmemoto.todo.api.v1.dto.UserDTO;
 import jp.nmemoto.todo.domain.model.User;
 import jp.nmemoto.todo.domain.repository.UserRepository;
+import jp.nmemoto.todo.lib.LoginUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static java.util.Collections.emptyList;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -35,10 +35,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), emptyList());
+        return userRepository.findByUsername(username).map(LoginUser::new).orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 }

@@ -3,6 +3,7 @@ package jp.nmemoto.todo.config;
 import jp.nmemoto.todo.domain.service.UserServiceImpl;
 import jp.nmemoto.todo.lib.JWTAuthenticationFilter;
 import jp.nmemoto.todo.lib.JWTAuthorizationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserServiceImpl userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
     public WebSecurityConfig(UserServiceImpl userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -39,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

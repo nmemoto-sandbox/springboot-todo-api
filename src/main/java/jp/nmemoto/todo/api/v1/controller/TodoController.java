@@ -1,8 +1,10 @@
 package jp.nmemoto.todo.api.v1.controller;
 
 import jp.nmemoto.todo.api.v1.dto.TodoDTO;
+import jp.nmemoto.todo.domain.model.User;
 import jp.nmemoto.todo.domain.service.TodoService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,39 +20,39 @@ public class TodoController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TodoDTO> findAll() {
-        return todoService.findAll();
+    public List<TodoDTO> findAll(@AuthenticationPrincipal(expression = "user") User user) {
+        return todoService.findAll(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public TodoDTO find(@PathVariable Long id) {
-        return todoService.find(id);
+    public TodoDTO find(@PathVariable Long id, @AuthenticationPrincipal(expression = "user") User user) {
+        return todoService.find(id, user);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoDTO create(@RequestBody TodoDTO todoDTO) {
-        return todoService.create(todoDTO);
+    public TodoDTO create(@RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
+        return todoService.create(todoDTO, user);
     }
 
 
     @RequestMapping(method = RequestMethod.PATCH, value = "{id}")
-    public TodoDTO patch(@PathVariable Long id, @RequestBody TodoDTO todoDTO) {
+    public TodoDTO patch(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
         todoDTO.setId(id);
-        return todoService.patch(todoDTO);
+        return todoService.patch(todoDTO, user);
     }
 
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public TodoDTO update(@PathVariable Long id, @RequestBody TodoDTO todoDTO) {
+    public TodoDTO update(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
         todoDTO.setId(id);
-        return todoService.update(todoDTO);
+        return todoService.update(todoDTO, user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        todoService.delete(id);
+    public void delete(@PathVariable Long id, @AuthenticationPrincipal(expression = "user") User user) {
+        todoService.delete(id, user);
     }
 
 }

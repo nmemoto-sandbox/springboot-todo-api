@@ -1,9 +1,11 @@
 package jp.nmemoto.todo.lib;
 
 import io.jsonwebtoken.Jwts;
+import jp.nmemoto.todo.domain.service.UserServiceImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -20,8 +22,11 @@ import static jp.nmemoto.todo.constant.SecurityConstants.TOKEN_PREFIX;
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private UserServiceImpl userService;
+
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, UserServiceImpl userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
 
     @Override
@@ -45,14 +50,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             // parse the token.
-            String user = Jwts.parser()
+            String username = Jwts.parser()
                     .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody()
                     .getSubject();
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            if (username != null) {
+                UserDetails loginUser = userService.loadUserByUsername(username);
+                return new UsernamePasswordAuthenticationToken(loginUser, null, new ArrayList<>());
             }
             return null;
         }

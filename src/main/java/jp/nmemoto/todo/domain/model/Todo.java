@@ -2,10 +2,7 @@ package jp.nmemoto.todo.domain.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,4 +12,6 @@ public class Todo {
     private Long id;
     private String name;
     private Boolean done;
+    @ManyToOne
+    private User user;
 }
