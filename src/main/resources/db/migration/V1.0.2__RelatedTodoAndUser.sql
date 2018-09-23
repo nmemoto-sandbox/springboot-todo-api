@@ -1,0 +1,2 @@
+ALTER TABLE todo ADD COLUMN user_id INT NOT NULL;
+ALTER TABLE todo ADD FOREIGN KEY (user_id) REFERENCES users(id);
