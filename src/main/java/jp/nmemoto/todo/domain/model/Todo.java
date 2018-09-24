@@ -1,12 +1,14 @@
 package jp.nmemoto.todo.domain.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-public class Todo {
+@EqualsAndHashCode(callSuper=true)
+public class Todo extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
