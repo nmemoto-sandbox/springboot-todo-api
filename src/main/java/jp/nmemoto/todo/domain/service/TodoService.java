@@ -10,11 +10,11 @@ public interface TodoService {
 
     TodoDTO find(Long id, User user);
 
-    void create(TodoDTO todoDTO, User user);
+    TodoDTO create(TodoDTO todoDTO, User user);
 
-    void patch(TodoDTO todoDTO, User user);
+    TodoDTO patch(TodoDTO todoDTO, User user);
 
-    void update(TodoDTO todoDTO, User user);
+    TodoDTO update(TodoDTO todoDTO, User user);
 
     void delete(Long id, User user);
 }

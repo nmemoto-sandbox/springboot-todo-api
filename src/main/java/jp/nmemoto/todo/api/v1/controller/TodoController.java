@@ -31,24 +31,24 @@ public class TodoController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
-        todoService.create(todoDTO, user);
+    public TodoDTO create(@RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
+        return todoService.create(todoDTO, user);
     }
 
 
     @RequestMapping(method = RequestMethod.PATCH, value = "{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void patch(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
+    @ResponseStatus(HttpStatus.OK)
+    public TodoDTO patch(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
         todoDTO.setId(id);
-        todoService.patch(todoDTO, user);
+        return todoService.patch(todoDTO, user);
     }
 
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
+    @ResponseStatus(HttpStatus.OK)
+    public TodoDTO update(@PathVariable Long id, @RequestBody TodoDTO todoDTO, @AuthenticationPrincipal(expression = "user") User user) {
         todoDTO.setId(id);
-        todoService.update(todoDTO, user);
+        return todoService.update(todoDTO, user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
