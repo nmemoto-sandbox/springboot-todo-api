@@ -51,32 +51,35 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public void create(TodoDTO todoDTO, User user) {
+    public TodoDTO create(TodoDTO todoDTO, User user) {
         Todo mapToTodo = mapToTodo(todoDTO);
         mapToTodo.setUser(user);
-        todoRepository.save(mapToTodo);
+        Todo todo = todoRepository.save(mapToTodo);
+        return mapToTodoDTO(todo);
     }
 
     @Override
     @Transactional
-    public void patch(TodoDTO todoDTO, User user) {
-        todoRepository.findByIdAndUser(todoDTO.getId(),user).map(todo -> {
+    public TodoDTO patch(TodoDTO todoDTO, User user) {
+        Todo todo = todoRepository.findByIdAndUser(todoDTO.getId(),user).map(savedTodo -> {
             if(todoDTO.getName() != null){
-                todo.setName(todoDTO.getName());
+                savedTodo.setName(todoDTO.getName());
             }
             if(todoDTO.getDone() != null){
-                todo.setDone(todoDTO.getDone());
+                savedTodo.setDone(todoDTO.getDone());
             }
-            return todoRepository.save(todo);
+            return todoRepository.save(savedTodo);
         }).orElseThrow(EntityNotFoundException::new);
+        return mapToTodoDTO(todo);
     }
 
     @Override
     @Transactional
-    public void update(TodoDTO todoDTO, User user) {
+    public TodoDTO update(TodoDTO todoDTO, User user) {
         Optional<Todo> todoOptional = todoRepository.findByIdAndUser(todoDTO.getId(), user);
         if (todoOptional.isPresent()) {
-            todoRepository.save(mapToTodo(todoDTO));
+            Todo todo = todoRepository.save(mapToTodo(todoDTO));
+            return mapToTodoDTO(todo);
         } else {
             //TODO
             throw new EntityNotFoundException();
