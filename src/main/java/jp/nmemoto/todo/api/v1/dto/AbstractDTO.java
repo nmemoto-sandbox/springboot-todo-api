@@ -3,7 +3,6 @@ package jp.nmemoto.todo.api.v1.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
