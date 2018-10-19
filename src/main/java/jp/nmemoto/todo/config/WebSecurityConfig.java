@@ -38,6 +38,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
+                .antMatchers(HttpMethod.GET, "/css/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/js/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/fonts/*").permitAll()
                 .antMatchers(HttpMethod.POST, SIGN_IN_URL).permitAll()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
