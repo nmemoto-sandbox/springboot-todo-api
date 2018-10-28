@@ -6,5 +6,17 @@ module.exports = {
         index: {
             entry: 'src/main/js/main.js'
         }
+    },
+    devServer: {
+        proxy: {
+            '/undefined': {
+                target: 'http://api:8080',
+                ws: true,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/undefined' : '/api/v1'
+                },
+            }
+        }
     }
 }
